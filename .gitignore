@@ -25,3 +25,8 @@ docs/BACKERS.md
 
 # Social-card render cache (mkdocs-material[imaging]).
 .cache/
+
+# Local Hermes-generated source/domain skills.
+# Keep the directory documentation, but do not commit generated child skills by default.
+generated_skills/*
+!generated_skills/README.md
