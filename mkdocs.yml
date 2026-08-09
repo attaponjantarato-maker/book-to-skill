@@ -53,6 +53,10 @@ nav:
   - Install: install.md
   - FAQ: faq.md
   - Architecture: architecture.md
+  - Hermes Integration: HERMES_INTEGRATION.md
+  - Medical Knowledge: MEDICAL_KNOWLEDGE_ARCHITECTURE.md
+  - Evidence-Aware Second Brain: EVIDENCE_AWARE_SECOND_BRAIN.md
+  - PoC-K002 Runbook: POC_K002_RUNBOOK.md
   - Performance: performance.md
   - Skill Reference: skill-reference.md
 

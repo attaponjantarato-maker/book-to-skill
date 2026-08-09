@@ -1,0 +1,53 @@
+schema_version: "1.0"
+poc_id: poc-k002
+status: PLANNED
+mode: POC_EXPLORATION
+owner_review_required: true
+
+source:
+  source_id: unknown
+  local_path_or_registry_id: unknown
+  authorized_for_local_processing: unknown
+  access_level: unknown
+  sha256: unknown
+
+p0_lite:
+  searched: []
+  candidates: []
+  selected_action: unknown
+  selected_path: unknown
+
+artifacts:
+  source_skill: unknown
+  source_card: unknown
+  source_notes: []
+  baseline_results: unknown
+  rag_results: not_run
+
+gates:
+  p0_lite: PENDING
+  source_registered: PENDING
+  extraction_qc: PENDING
+  locator_qc: PENDING
+  source_contract: PENDING
+  skill_validation: PENDING
+  security_review: PENDING
+  hermes_discovery: PENDING
+  baseline_evaluation: PENDING
+  owner_review: PENDING
+
+evaluation:
+  prespecified_question_count: 0
+  answerable_count: 0
+  unanswerable_count: 0
+  disagreement_count: 0
+  answers_with_correct_source_and_locator: 0
+  unsupported_positive_claims: 0
+  correct_abstentions: 0
+  disagreements_exposed: 0
+
+result:
+  establishes: []
+  does_not_establish: []
+  limitations: []
+  next_decision: unknown

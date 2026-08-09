@@ -49,7 +49,7 @@ They're complementary, not competing: RAG indexes a shelf, book-to-skill masters
 
 For widely-known books (Clean Code, DDIA, Pragmatic Programmer), Claude has general knowledge — but it's compressed, averaged across the entire internet's discussion of the book, and may hallucinate specific quotes or chapter locations.
 
-book-to-skill works from your actual copy. Every framework name, every anti-pattern list, every chapter number is grounded in the text you provided. No training data drift, no hallucinated chapter titles.
+book-to-skill works from your actual copy, so generated framework names, anti-pattern lists, and chapter references can be checked against the text you provided. This reduces reliance on model memory but does not guarantee a hallucination-free extraction or answer; review important claims and locators against the source.
 
 It also shines for books Claude doesn't know at all: niche technical references, internal company documentation, recent publications, translated works.
 
