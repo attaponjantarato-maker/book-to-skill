@@ -1,0 +1,47 @@
+project:
+  name: TBD
+  slug: TBD
+  status: exploratory
+  domain: TBD
+
+medical_imaging:
+  modalities: []
+  scanner: TBD
+  tracer:
+    isotope: TBD
+    compound: TBD
+  acquisition:
+    coverage: TBD
+    duration: TBD
+    timing: TBD
+  reconstruction:
+    method: TBD
+    parameters: {}
+    corrections: []
+  analysis:
+    registration: []
+    segmentation: []
+    quantification: []
+    image_processing: []
+    statistics: []
+
+inputs:
+  data: []
+  metadata: []
+
+outputs: []
+
+tools:
+  preferred: []
+  available: []
+
+policy:
+  medical_knowledge: advisory
+
+workflow:
+  current_phase: discovery
+  status: not_started
+
+notes:
+  - Keep this file compact and machine-readable.
+  - Mirror stable facts from PROJECT_CONTEXT.md; do not create conflicting project state.
