@@ -25,6 +25,7 @@ artifacts:
   rag_results: not_run
 
 gates:
+  p0_lite: PENDING
   source_registered: PENDING
   extraction_qc: PENDING
   locator_qc: PENDING
