@@ -30,6 +30,7 @@ or copyrighted source text to Git.
 
 ```text
 PLANNED
+  → P0_LITE_COMPLETE
   → SOURCE_REGISTERED
   → EXTRACTED
   → SOURCE_SKILL_BUILT
