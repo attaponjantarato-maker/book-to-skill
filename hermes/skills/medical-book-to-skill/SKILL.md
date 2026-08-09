@@ -54,7 +54,7 @@ Do not create a Book-to-Skill MCP, vector database, or knowledge graph in this s
 
 Confirm or obtain only the missing critical fields:
 
-- exact local source file or authorized source set;
+- exact local source file;
 - title, type, version/edition, and publication date when known;
 - intended topic and use;
 - processing/redistribution permission;
