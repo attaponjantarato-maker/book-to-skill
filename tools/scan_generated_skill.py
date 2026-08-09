@@ -14,7 +14,21 @@ from typing import Iterable, Sequence
 MAX_SKILL_FILES = 1_000
 MAX_FILE_BYTES = 2 * 1024 * 1024
 MAX_TOTAL_BYTES = 20 * 1024 * 1024
-SUPPORTING_FILENAMES = ("glossary.md", "patterns.md", "cheatsheet.md")
+SUPPORTING_FILENAMES = (
+    "SOURCE.md",
+    "limitations.md",
+    "glossary.md",
+    "patterns.md",
+    "cheatsheet.md",
+)
+CONTENT_DIRECTORY_NAMES = (
+    "chapters",
+    "references",
+    "concepts",
+    "equations",
+    "limitations",
+    "provenance",
+)
 
 # Reuse the extractor's invisible-code-point set instead of duplicating it, so
 # the two injection defenses cannot drift apart. They previously did: the
@@ -133,11 +147,15 @@ def _collect_skill_files(skill_dir: Path) -> list[Path]:
                 raise ScanError(f"{filename} must be a real file")
             candidates.add(supporting_file)
 
-    chapters = root / "chapters"
-    if chapters.exists():
-        if chapters.is_symlink() or not chapters.is_dir():
-            raise ScanError("chapters must be a real directory, not a symbolic link")
-        candidates.update(chapters.glob("*.md"))
+    for directory_name in CONTENT_DIRECTORY_NAMES:
+        content_directory = root / directory_name
+        if not content_directory.exists():
+            continue
+        if content_directory.is_symlink() or not content_directory.is_dir():
+            raise ScanError(
+                f"{directory_name} must be a real directory, not a symbolic link"
+            )
+        candidates.update(content_directory.rglob("*.md"))
 
     files = sorted(candidates, key=lambda path: path.relative_to(root).as_posix().lower())
     if len(files) > MAX_SKILL_FILES:
