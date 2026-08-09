@@ -1,4 +1,4 @@
-"""Medical-domain knowledge structures and validation policy."""
+"""Medical-domain knowledge structures and optional validation policy."""
 
 from .classifier import classify_topic, classify_topics
 from .models import (
@@ -9,6 +9,7 @@ from .models import (
     SourceProvenance,
     SourceType,
 )
+from .policy import PolicyMode
 from .validator import (
     Severity,
     UseDecision,
@@ -23,6 +24,7 @@ __all__ = [
     "KnowledgeClass",
     "KnowledgeTopic",
     "MedicalKnowledgeUnit",
+    "PolicyMode",
     "Severity",
     "SourceProvenance",
     "SourceType",
