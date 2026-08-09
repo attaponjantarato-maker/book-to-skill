@@ -168,6 +168,12 @@ def _validate_source_card(fields: Mapping[str, str]) -> list[str]:
         )
     if fields["review_state"] not in REVIEW_STATES:
         errors.append("SOURCE.md review_state is not recognized")
+    if fields["status"] == "HUMAN_CHECKED" and fields["review_state"] != "HUMAN_CHECKED":
+        errors.append("SOURCE.md HUMAN_CHECKED status requires HUMAN_CHECKED review_state")
+    if fields["status"] == "SUPERSEDED" and fields["review_state"] != "SUPERSEDED":
+        errors.append("SOURCE.md SUPERSEDED status requires SUPERSEDED review_state")
+    if fields["review_state"] == "SUPERSEDED" and fields["status"] != "SUPERSEDED":
+        errors.append("SOURCE.md SUPERSEDED review_state requires SUPERSEDED status")
 
     locator_types = {item.strip() for item in fields["locator_types"].split("|") if item.strip()}
     if not locator_types:
@@ -187,6 +193,8 @@ def _validate_source_card(fields: Mapping[str, str]) -> list[str]:
         errors.append("SOURCE.md source_file_hash_sha256 must be a 64-character SHA-256")
     if fields["pmid"] != "unknown" and not fields["pmid"].isdigit():
         errors.append("SOURCE.md pmid must be unknown or numeric")
+    if fields["doi"] != "unknown" and not re.fullmatch(r"10\.\d{4,9}/\S+", fields["doi"]):
+        errors.append("SOURCE.md doi must be unknown or have a DOI-shaped 10.<registrant>/<suffix> value")
     if fields["authority_scope"].lower() in {"unknown", "none", "null"}:
         errors.append("SOURCE.md authority_scope must state what the source can support")
     return errors
