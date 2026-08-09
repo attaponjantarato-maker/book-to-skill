@@ -3,6 +3,8 @@ from book_to_skill.medical import (
     KnowledgeClass,
     KnowledgeTopic,
     MedicalKnowledgeUnit,
+    PolicyMode,
+    Severity,
     SourceProvenance,
     SourceType,
     VerificationContext,
@@ -63,11 +65,13 @@ def test_provenance_requires_source_locator():
             source_type=SourceType.TEXTBOOK,
         ),
     )
-    codes = {issue.code for issue in validate_unit(unit)}
+    issues = validate_unit(unit)
+    codes = {issue.code for issue in issues}
     assert "missing_source_locator" in codes
+    assert any(issue.severity is Severity.ERROR for issue in issues)
 
 
-def test_textbook_protocol_cannot_be_current_recommendation_without_verification():
+def test_personal_research_mode_warns_but_does_not_block_textbook_protocol():
     unit = _unit(
         klass=KnowledgeClass.CLINICAL,
         topics=[KnowledgeTopic.PROTOCOL],
@@ -75,12 +79,29 @@ def test_textbook_protocol_cannot_be_current_recommendation_without_verification
     )
     decision = evaluate_use(unit, IntendedUse.CURRENT_CLINICAL_RECOMMENDATION)
     codes = {issue.code for issue in decision.issues}
+    assert decision.allowed is True
+    assert "current_authority_recommended" in codes
+    assert "textbook_may_be_outdated" in codes
+    assert "time_sensitive_check_recommended" in codes
+    assert all(issue.severity is Severity.WARNING for issue in decision.issues)
+
+
+def test_strict_mode_can_block_unverified_textbook_protocol():
+    unit = _unit(
+        klass=KnowledgeClass.CLINICAL,
+        topics=[KnowledgeTopic.PROTOCOL],
+        time_sensitive=True,
+    )
+    decision = evaluate_use(
+        unit,
+        IntendedUse.CURRENT_CLINICAL_RECOMMENDATION,
+        policy_mode=PolicyMode.STRICT,
+    )
     assert decision.allowed is False
-    assert "current_authority_required" in codes
-    assert "textbook_not_current_authority" in codes
+    assert any(issue.severity is Severity.ERROR for issue in decision.issues)
 
 
-def test_current_guideline_verification_can_unlock_textbook_background_for_clinical_use():
+def test_current_guideline_context_removes_clinical_policy_findings():
     unit = _unit(
         klass=KnowledgeClass.CLINICAL,
         topics=[KnowledgeTopic.PROTOCOL],
@@ -92,19 +113,39 @@ def test_current_guideline_verification_can_unlock_textbook_background_for_clini
         VerificationContext(current_guideline_verified=True),
     )
     assert decision.allowed is True
+    assert decision.issues == ()
 
 
-def test_technical_implementation_requires_project_context():
+def test_personal_research_mode_warns_but_allows_technical_implementation():
     unit = _unit(
         klass=KnowledgeClass.TECHNICAL,
         topics=[KnowledgeTopic.RECONSTRUCTION_PARAMETER],
     )
     decision = evaluate_use(unit, IntendedUse.IMPLEMENTATION_DECISION)
+    assert decision.allowed is True
+    assert "technical_context_recommended" in {
+        issue.code for issue in decision.issues
+    }
+    assert all(issue.severity is Severity.WARNING for issue in decision.issues)
+
+
+def test_strict_mode_blocks_technical_implementation_without_context():
+    unit = _unit(
+        klass=KnowledgeClass.TECHNICAL,
+        topics=[KnowledgeTopic.RECONSTRUCTION_PARAMETER],
+    )
+    decision = evaluate_use(
+        unit,
+        IntendedUse.IMPLEMENTATION_DECISION,
+        policy_mode=PolicyMode.STRICT,
+    )
     assert decision.allowed is False
-    assert "technical_context_required" in {issue.code for issue in decision.issues}
+    assert "technical_context_recommended" in {
+        issue.code for issue in decision.issues
+    }
 
 
-def test_technical_implementation_allowed_after_project_context_check():
+def test_technical_implementation_has_no_warning_after_project_context_check():
     unit = _unit(
         klass=KnowledgeClass.TECHNICAL,
         topics=[KnowledgeTopic.RECONSTRUCTION_PARAMETER],
@@ -115,3 +156,4 @@ def test_technical_implementation_allowed_after_project_context_check():
         VerificationContext(project_context_verified=True),
     )
     assert decision.allowed is True
+    assert decision.issues == ()
