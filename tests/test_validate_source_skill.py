@@ -140,6 +140,36 @@ def test_reference_note_requires_a_real_locator(tmp_path: Path):
     assert any("locator must point back" in error for error in errors)
 
 
+def test_human_checked_status_requires_matching_review_state(tmp_path: Path):
+    skill = _write_source_skill(tmp_path / "inconsistent-review")
+    source = skill / "SOURCE.md"
+    source.write_text(
+        source.read_text(encoding="utf-8").replace(
+            "status: SOURCE_DERIVED_POC", "status: HUMAN_CHECKED"
+        ),
+        encoding="utf-8",
+    )
+
+    errors = validator.validate_source_skill(skill)
+
+    assert any("HUMAN_CHECKED status requires" in error for error in errors)
+
+
+def test_doi_must_have_basic_doi_shape_when_present(tmp_path: Path):
+    skill = _write_source_skill(tmp_path / "invalid-doi")
+    source = skill / "SOURCE.md"
+    source.write_text(
+        source.read_text(encoding="utf-8").replace(
+            "doi: unknown", "doi: definitely-not-a-doi"
+        ),
+        encoding="utf-8",
+    )
+
+    errors = validator.validate_source_skill(skill)
+
+    assert any("doi must be unknown" in error for error in errors)
+
+
 def test_source_skill_rejects_symlinked_source_card(tmp_path: Path):
     skill = _write_source_skill(tmp_path / "symlink-reference")
     external = tmp_path / "external-source.md"
