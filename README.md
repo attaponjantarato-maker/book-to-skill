@@ -42,7 +42,14 @@
 
 1. **Point** it at a file, folder, or glob — `/book-to-skill ./my-book.pdf`
 2. **It distills** the book into a skill — frameworks, decision rules, anti-patterns, and per-chapter files. Structure, not a summary.
-3. **Your agent loads it on demand** — ask `/my-book replication` and it reads the right chapter and answers from the real content, no hallucination.
+3. **Your agent loads it on demand** — ask `/my-book replication` and it reads the relevant source-derived chapter notes instead of relying only on model memory.
+
+> **Medical/Hermes extension in this fork:** source-derived does not mean verified.
+> The evidence-aware lane requires full-text access labels, source hashes, real
+> locators, review state, generated-content security review, and explicit claim
+> limits. Start with [Hermes integration](docs/HERMES_INTEGRATION.md), the
+> [Evidence-Aware Second Brain](docs/EVIDENCE_AWARE_SECOND_BRAIN.md), and
+> [PoC-K002 runbook](docs/POC_K002_RUNBOOK.md).
 
 ---
 
@@ -59,7 +66,7 @@ The usual workarounds don't help:
 
 **book-to-skill solves this by turning the book into a structured skill your agent loads on demand.**
 
-Once installed, you just type `/your-book-slug replication` and the agent reads the right chapter and answers from the actual content. No hallucination. No digging through PDFs. The book becomes part of your workflow.
+Once installed, you just type `/your-book-slug replication` and the agent reads the relevant chapter notes derived from your source. This improves grounding and navigation, but it does not guarantee a hallucination-free answer. The book becomes part of your workflow without repeated PDF digging.
 
 Works with any host that supports the open [Agent Skills](https://github.com/agentskills/agentskills) standard — GitHub Copilot CLI, Amp, and Claude Code all read the same `SKILL.md` format.
 
