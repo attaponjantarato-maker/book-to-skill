@@ -38,8 +38,11 @@ molecular-imaging-assistant
 book-to-skill/hermes/skills
   └─ tells Hermes how to ingest and publish a source safely
 
+book-to-skill/.skill_staging
+  └─ quarantines generated candidates; never add this path to Hermes
+
 book-to-skill/generated_skills
-  └─ provides source-labelled knowledge on demand
+  └─ provides only approved, promoted source-labelled knowledge on demand
 
 scientific API/CLI/MCP
   └─ produces quantitative results
@@ -93,7 +96,9 @@ AUTHORIZED FULL-TEXT SOURCE AVAILABLE?
         ├─ no → abstain or record discovery-only inbox note
         └─ yes → invoke /medical-book-to-skill
                          ↓
-              validate + scan + human review
+              quarantine + validate + scan + human review
+                         ↓
+                 hash-bound promotion gate
                          ↓
                    fresh discovery check
                          ↓
@@ -106,10 +111,10 @@ check source identity, version, scope, and whether the correct skill already exi
 
 ## Default output contract
 
-For the evidence-aware medical PoC, use:
+For the evidence-aware medical PoC, generate first under quarantine:
 
 ```text
-generated_skills/<source-slug>/
+.skill_staging/<run-id>/<source-slug>/
 ├── SKILL.md
 ├── SOURCE.md
 ├── references/ or chapters/
@@ -130,6 +135,10 @@ An installed source skill requires:
 
 Use the templates under `templates/evidence_second_brain/` and the checks documented
 in the PoC-K002 runbook.
+
+After validation and source spot-checks, bind an explicit approval receipt to the
+candidate tree hash and promote it with `tools/promote_generated_skill.py`. Only the
+resulting `generated_skills/<source-slug>/` path is eligible for Hermes discovery.
 
 ## Optional Obsidian view
 
@@ -187,12 +196,13 @@ from a source stay in the source skill.
 
 After creating or changing a generated skill:
 
-1. run the skill validator, source-contract validator, and security scanner;
+1. keep the candidate under `.skill_staging/` and run all three validators;
 2. obtain human disposition for scanner findings and spot-check source locators;
-3. start a fresh Hermes session if the installed version does not refresh skills;
-4. verify the exact skill name and version is discoverable;
-5. verify `_notes/inbox` and other non-skill directories are not exposed as skills;
-6. record the result in the MIA PoC state file.
+3. record owner approval bound to the candidate hash and run the promotion tool;
+4. start a fresh Hermes session if the installed version does not refresh skills;
+5. verify the exact skill name and version is discoverable;
+6. verify `_notes/inbox`, `.skill_staging`, and other non-skill directories are not exposed;
+7. record the result in the MIA PoC state file.
 
 Discovery establishes technical integration only. It does not establish that the
 source is correct/current or that an answer has scientific, diagnostic, or clinical

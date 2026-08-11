@@ -4,6 +4,12 @@ This directory is the default local output for reusable source skills generated
 from authorized full-text textbooks, papers, guidelines, manuals, standards, and
 technical documents.
 
+It is a **promotion target, not a generation target**. New candidates must first be
+written under `.skill_staging/<run-id>/<source-slug>/`, where Hermes cannot discover
+them. The owner approves a hash-bound candidate only after validation and source
+spot-checks; `tools/promote_generated_skill.py` then moves it here without clobbering
+an existing skill.
+
 Hermes may scan it through:
 
 ```yaml
@@ -45,17 +51,19 @@ scientifically validated, diagnostically accurate, or clinically useful.
 
 ## Required checks
 
-Before loading a medical source skill into Hermes:
+Before promoting a medical source skill into this directory:
 
 ```bash
-python tools/validate_skill.py generated_skills/<source-slug>/SKILL.md
-python tools/validate_source_skill.py generated_skills/<source-slug>
-python tools/scan_generated_skill.py generated_skills/<source-slug>
+python tools/validate_skill.py .skill_staging/<run-id>/<source-slug>/SKILL.md
+python tools/validate_source_skill.py .skill_staging/<run-id>/<source-slug>
+python tools/scan_generated_skill.py .skill_staging/<run-id>/<source-slug>
+python tools/promote_generated_skill.py \
+  .skill_staging/<run-id>/<source-slug> <source-slug> --check-only
 ```
 
 Security-scan findings require human review. Passing the contracts does not prove
 factual or scientific correctness. Follow `docs/POC_K002_RUNBOOK.md` for source
-spot-checks, Hermes discovery, and evaluation.
+spot-checks, approval receipt creation, promotion, Hermes discovery, and evaluation.
 
 ## Retrieval boundary
 

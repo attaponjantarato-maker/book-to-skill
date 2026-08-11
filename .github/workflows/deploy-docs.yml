@@ -21,9 +21,10 @@ on:
       - mkdocs.yml
       - .github/workflows/deploy-docs.yml
 
-# Minimal: gh-deploy pushes the built site to the gh-pages branch.
+# This fork builds documentation in CI but intentionally does not publish the
+# upstream custom-domain site.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   docs:
@@ -70,6 +71,3 @@ jobs:
           sed -i -E 's,\]\(\.\./README\.md\),](guide.md),g' docs/*.md
       - name: Build
         run: mkdocs build
-      - name: Deploy to gh-pages (master push only)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: mkdocs gh-deploy --force

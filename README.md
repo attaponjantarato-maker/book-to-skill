@@ -4,12 +4,19 @@
 
 <h1 align="center">book-to-skill</h1>
 
+> **Medical/Hermes experimental fork.** This repository is
+> `attaponjantarato-maker/book-to-skill`, derived from
+> [virgiliojr94/book-to-skill](https://github.com/virgiliojr94/book-to-skill).
+> It adds evidence-labelled medical source skills, quarantine-first generation,
+> and approval-gated promotion. It is not the upstream release channel and is not
+> clinically or scientifically validated.
+
 <p align="center">
   <strong>Turn any technical book, document folder, or collection of sources into a unified agent skill — ready to study, reference, and use while you work in GitHub Copilot CLI, Amp, or Claude Code.</strong>
 </p>
 
 <p align="center">
-  <a href="https://github.com/virgiliojr94/book-to-skill/releases"><img src="https://img.shields.io/github/v/release/virgiliojr94/book-to-skill?style=for-the-badge&color=blueviolet" alt="Latest release"></a>
+  <a href="https://github.com/virgiliojr94/book-to-skill/releases"><img src="https://img.shields.io/github/v/release/virgiliojr94/book-to-skill?style=for-the-badge&color=blueviolet" alt="Upstream latest release"></a>
   <img src="https://img.shields.io/badge/Agent_Skills-Open_Standard-blueviolet?style=for-the-badge" alt="Agent Skills standard">
   <img src="https://img.shields.io/badge/PDF%20%E2%80%A2%20EPUB%20%E2%80%A2%20DOCX%20%E2%80%A2%20MD%20%E2%80%A2%20HTML%20%E2%80%A2%20RTF%20%E2%80%A2%20MOBI-supported-green?style=for-the-badge" alt="Formats supported">
   <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License">
@@ -130,7 +137,7 @@ Two halves: a deterministic Python **extractor** (document → clean text + meta
 
 ```bash
 # Agent skill (registers /book-to-skill) — clone into your skills folder:
-git clone https://github.com/virgiliojr94/book-to-skill.git ~/.claude/skills/book-to-skill
+git clone https://github.com/attaponjantarato-maker/book-to-skill.git ~/.claude/skills/book-to-skill
 # (Copilot CLI: ~/.copilot/skills/ · Amp/cross-agent: ~/.agents/skills/)
 ```
 
@@ -238,17 +245,26 @@ When in doubt, follow the license or terms of the source document. This project 
 
 <img align="right" width="150" src="docs/assets/booklin-celebrating.png" alt="Booklin celebrating">
 
-book-to-skill is free and MIT-licensed, maintained on personal time. If it saves you tokens or study hours, consider sponsoring its upkeep: PR reviews, multilingual fixes, releases, and docs.
+The original book-to-skill project is free and MIT-licensed and is maintained on
+personal time by its upstream author. If the upstream extractor saves you tokens or
+study hours, consider sponsoring that work.
 
 **[Become a sponsor → github.com/sponsors/virgiliojr94](https://github.com/sponsors/virgiliojr94)**
 
 Every sponsor is listed in [BACKERS.md](BACKERS.md). Thank you for keeping open, privacy-first tooling alive. ✨
 
+## Upstream attribution
+
+This fork retains the MIT license, copyright notices, upstream history, mascot,
+benchmarks, sponsor links, and original project documentation. General extractor
+releases come from [virgiliojr94/book-to-skill](https://github.com/virgiliojr94/book-to-skill).
+Medical/Hermes changes in this fork are experimental and maintained separately.
+
 ## License
 
 MIT — applies to the converter (code + skill definition) in this repository, **not** to any book or document you process with it.
 
-## Star History
+## Upstream Star History
 
 <a href="https://www.star-history.com/?repos=virgiliojr94%2Fbook-to-skill&type=date&legend=top-left">
  <picture>

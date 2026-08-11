@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from dataclasses import dataclass
@@ -12,6 +13,7 @@ from typing import Iterable, Sequence
 
 
 MAX_SKILL_FILES = 1_000
+MAX_SKILL_ENTRIES = 5_000
 MAX_FILE_BYTES = 2 * 1024 * 1024
 MAX_TOTAL_BYTES = 20 * 1024 * 1024
 SUPPORTING_FILENAMES = (
@@ -137,30 +139,42 @@ def _collect_skill_files(skill_dir: Path) -> list[Path]:
     if not master.is_file() or master.is_symlink():
         raise ScanError("SKILL.md is missing or is a symbolic link")
 
-    candidates = {master}
-    for filename in SUPPORTING_FILENAMES:
-        supporting_file = root / filename
-        if supporting_file.is_symlink():
-            raise ScanError(f"{filename} must be a real file, not a symbolic link")
-        if supporting_file.exists():
-            if not supporting_file.is_file():
-                raise ScanError(f"{filename} must be a real file")
-            candidates.add(supporting_file)
+    files: list[Path] = []
+    pending = [root]
+    entry_count = 0
+    while pending:
+        directory = pending.pop()
+        try:
+            entries = list(os.scandir(directory))
+        except OSError as exc:
+            raise ScanError("generated skill contains an unreadable directory") from exc
+        for entry in entries:
+            entry_count += 1
+            if entry_count > MAX_SKILL_ENTRIES:
+                raise ScanError(
+                    f"generated skill exceeds the {MAX_SKILL_ENTRIES:,}-entry traversal limit"
+                )
+            path = Path(entry.path)
+            if entry.is_symlink():
+                raise ScanError("generated skill contains a symbolic link")
+            try:
+                if entry.is_dir(follow_symlinks=False):
+                    pending.append(path)
+                elif entry.is_file(follow_symlinks=False):
+                    files.append(path)
+                    if len(files) > MAX_SKILL_FILES:
+                        raise ScanError(
+                            f"generated skill has more than {MAX_SKILL_FILES:,} files"
+                        )
+                else:
+                    raise ScanError("generated skill contains a non-regular filesystem entry")
+            except OSError as exc:
+                raise ScanError("generated skill contains an unreadable filesystem entry") from exc
 
-    for directory_name in CONTENT_DIRECTORY_NAMES:
-        content_directory = root / directory_name
-        if not content_directory.exists():
-            continue
-        if content_directory.is_symlink() or not content_directory.is_dir():
-            raise ScanError(
-                f"{directory_name} must be a real directory, not a symbolic link"
-            )
-        candidates.update(content_directory.rglob("*.md"))
-
-    files = sorted(candidates, key=lambda path: path.relative_to(root).as_posix().lower())
+    files.sort(key=lambda path: path.relative_to(root).as_posix().lower())
     if len(files) > MAX_SKILL_FILES:
         raise ScanError(
-            f"generated skill has {len(files):,} Markdown files; maximum is "
+            f"generated skill has {len(files):,} files; maximum is "
             f"{MAX_SKILL_FILES:,}"
         )
     return files
@@ -184,9 +198,12 @@ def _read_skill_files(skill_dir: Path, files: Iterable[Path]) -> Iterable[tuple[
             )
         relative = path.relative_to(skill_dir).as_posix()
         try:
-            yield relative, path.read_text(encoding="utf-8-sig")
+            text = path.read_text(encoding="utf-8-sig")
+            if "\x00" in text:
+                raise ScanError(f"{_terminal_safe(relative)} is not a UTF-8 text file")
+            yield relative, text
         except UnicodeDecodeError as exc:
-            raise ScanError(f"{_terminal_safe(relative)} is not valid UTF-8") from exc
+            raise ScanError(f"{_terminal_safe(relative)} is not a UTF-8 text file") from exc
         except OSError as exc:
             raise ScanError(f"could not read {_terminal_safe(relative)}") from exc
 

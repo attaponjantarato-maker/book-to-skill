@@ -1,0 +1,21 @@
+schema_version: "1.1.0"
+contract_id: medical-source-skill
+source_card_schema_version: "1.0"
+scanner_scope: all_regular_utf8_text_files
+staging_protocol_version: "1.0"
+staging_root: .skill_staging
+promotion_root: generated_skills
+validators:
+  skill_structure: tools/validate_skill.py
+  source_traceability: tools/validate_source_skill.py
+  generated_content: tools/scan_generated_skill.py
+  promotion_gate: tools/promote_generated_skill.py
+guarantees:
+  - generated_candidates_are_not_discoverable_before_promotion
+  - scanner_findings_require_exact_human_disposition
+  - owner_approval_is_bound_to_candidate_tree_sha256
+  - promotion_is_same_filesystem_and_no_clobber
+claim_limits:
+  - structural_validation_does_not_establish_factual_truth
+  - promotion_receipt_is_procedural_evidence_not_identity_authentication
+  - source_skill_does_not_establish_scientific_or_clinical_validity

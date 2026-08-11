@@ -54,9 +54,13 @@ research.
 
 ## PoC vault layout
 
-Use `generated_skills/` as both the local generated-skill collection and the
+Use `generated_skills/` as both the approved local generated-skill collection and the
 optional Obsidian vault during PoC-K002. This avoids copying the same derived
 content into a separate wiki.
+
+Generate candidates under `.skill_staging/<run-id>/`, which must never be a Hermes
+external skill directory or Obsidian evidence vault. Move a candidate into
+`generated_skills/` only through the hash-bound approval and promotion gate.
 
 ```text
 generated_skills/
