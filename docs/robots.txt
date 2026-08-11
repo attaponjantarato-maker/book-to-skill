@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://booktoskill.is-a.dev/sitemap.xml
+Sitemap: https://attaponjantarato-maker.github.io/book-to-skill/sitemap.xml

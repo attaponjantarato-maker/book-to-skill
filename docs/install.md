@@ -5,6 +5,10 @@ seo_title: "Install book-to-skill - Claude Code, Copilot CLI, Amp, or pip"
 
 ## 📥 Install
 
+> This page installs the medical/Hermes experimental fork. The standalone PyPI
+> package remains the upstream extractor and does not include this fork's staging
+> and promotion workflow.
+
 > **Two ways to use it, do not confuse them:**
 > - **As an agent skill** (the `/book-to-skill` command in Claude Code, Copilot CLI, or Amp) → **`git clone` into your skills folder** (below). This is what gives you the slash command and the full convert-a-book flow.
 > - **As a standalone CLI** (just the text extractor) → `pip install book-to-skill`, then `book-to-skill --help`. This does **not** register the agent skill; it only installs the extraction engine. See [the CLI section](#standalone-cli-pip).
@@ -14,7 +18,7 @@ The skill follows the open [Agent Skills](https://github.com/agentskills/agentsk
 **GitHub Copilot CLI** (personal skill):
 
 ```bash
-git clone https://github.com/virgiliojr94/book-to-skill.git ~/.copilot/skills/book-to-skill
+git clone https://github.com/attaponjantarato-maker/book-to-skill.git ~/.copilot/skills/book-to-skill
 # then, in a `copilot` session:
 /skills reload
 /skills info book-to-skill
@@ -23,7 +27,7 @@ git clone https://github.com/virgiliojr94/book-to-skill.git ~/.copilot/skills/bo
 Or the cross-agent path that Copilot CLI and Amp both discover:
 
 ```bash
-git clone https://github.com/virgiliojr94/book-to-skill.git ~/.agents/skills/book-to-skill
+git clone https://github.com/attaponjantarato-maker/book-to-skill.git ~/.agents/skills/book-to-skill
 ```
 
 **Claude Code**:
@@ -31,13 +35,13 @@ git clone https://github.com/virgiliojr94/book-to-skill.git ~/.agents/skills/boo
 Copy this into your Claude Code session:
 
 ```
-Install book-to-skill: https://raw.githubusercontent.com/virgiliojr94/book-to-skill/master/SKILL.md
+Install book-to-skill: https://raw.githubusercontent.com/attaponjantarato-maker/book-to-skill/master/SKILL.md
 ```
 
 Or manually using standard `git clone` (ensures modular engine files are fetched correctly):
 
 ```bash
-git clone https://github.com/virgiliojr94/book-to-skill.git ~/.claude/skills/book-to-skill
+git clone https://github.com/attaponjantarato-maker/book-to-skill.git ~/.claude/skills/book-to-skill
 ```
 
 Then in any agent session:

@@ -2,9 +2,9 @@ site_name: book-to-skill
 site_description: >-
   Turn any book, PDF or EPUB into a structured agent skill for Claude Code,
   GitHub Copilot CLI and Amp — frameworks and decision rules, loaded on demand.
-site_url: https://booktoskill.is-a.dev/
-repo_url: https://github.com/virgiliojr94/book-to-skill
-repo_name: virgiliojr94/book-to-skill
+site_url: https://attaponjantarato-maker.github.io/book-to-skill/
+repo_url: https://github.com/attaponjantarato-maker/book-to-skill
+repo_name: attaponjantarato-maker/book-to-skill
 edit_uri: ""
 
 # index.md is a committed landing page. Guide (README.md) and Skill Reference

@@ -87,9 +87,11 @@ upstream extraction + sanitization
         ↓
 extraction/locator QC
         ↓
-one evidence-labelled source skill
+quarantined evidence-labelled source-skill candidate
         ↓
 source-contract validation + generated-content security review
+        ↓
+human spot-check + hash-bound owner approval + atomic promotion
         ↓
 Hermes skill discovery
         ↓
@@ -120,13 +122,19 @@ Minimum PoC layout:
   `source_id`, `FULL_TEXT`, a real locator, and its review state.
 - quantitative computation remains outside the skill.
 
-Start from `templates/evidence_second_brain/` and validate with:
+Start from `templates/evidence_second_brain/`, generate under
+`.skill_staging/<run-id>/<source-slug>/`, and validate with:
 
 ```bash
-python tools/validate_skill.py generated_skills/<source-slug>/SKILL.md
-python tools/validate_source_skill.py generated_skills/<source-slug>
-python tools/scan_generated_skill.py generated_skills/<source-slug>
+python tools/validate_skill.py .skill_staging/<run-id>/<source-slug>/SKILL.md
+python tools/validate_source_skill.py .skill_staging/<run-id>/<source-slug>
+python tools/scan_generated_skill.py .skill_staging/<run-id>/<source-slug>
+python tools/promote_generated_skill.py \
+  .skill_staging/<run-id>/<source-slug> <source-slug> --check-only
 ```
+
+Only an explicitly approved candidate may be moved into `generated_skills/` by the
+promotion tool. Direct generation into the discovery directory is outside the contract.
 
 Passing these checks establishes structural completeness and known-pattern
 screening only. It does not validate factual truth, scientific performance, source
@@ -157,8 +165,9 @@ Implemented:
 - upstream deterministic extraction and sanitization;
 - medical provenance models, classification, and advisory/strict policy checks;
 - Hermes factory skill and external skill-directory integration documentation;
-- generated-content scanner covering `SKILL.md`, `SOURCE.md`, supporting files,
-  and Markdown under chapters/references/concepts/equations/limitations/provenance;
+- generated-content scanner covering every regular UTF-8 text file at every path
+  in a candidate, with symlink, special-file, binary, and resource-limit rejection;
+- quarantine-first generation and hash-bound, no-clobber promotion tooling;
 - standard-library validator for the PoC source-card and source-note contract;
 - templates and PoC-K002 runbook.
 

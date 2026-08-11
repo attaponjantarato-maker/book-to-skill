@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "approved": false,
+  "approved_by": "REPLACE_WITH_OWNER_ID",
+  "approved_at": "1970-01-01T00:00:00Z",
+  "target_slug": "replace-with-source-slug",
+  "candidate_sha256": "REPLACE_WITH_CHECK_ONLY_HASH",
+  "spot_checks": {
+    "beginning": "PASS",
+    "middle": "PASS",
+    "end": "PASS",
+    "equations_and_thresholds": "NOT_APPLICABLE",
+    "limitation_or_failure": "PASS"
+  },
+  "scanner_findings": [],
+  "skill_validator_warnings": []
+}

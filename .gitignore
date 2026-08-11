@@ -30,3 +30,7 @@ docs/BACKERS.md
 # Keep the directory documentation, but do not commit generated child skills by default.
 generated_skills/*
 !generated_skills/README.md
+
+# Quarantined generated candidates and owner approval receipts.
+.skill_staging/*
+!.skill_staging/README.md
